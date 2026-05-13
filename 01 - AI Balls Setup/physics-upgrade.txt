@@ -1,0 +1,74 @@
+1. LLM world has 3 layers
+
+a.) Physics layer
+ - just updated: spatial grid, broad-phase (grid), narrow-phase (collision detection), impulse solver, positional correction, fixed timestep, player click/change
+ - responsible: position, velocity, collisions, boundaries
+ - also added target
+ - finally make it not display anything (will happen in another file)
+ - TODO: find the target
+b.) Agent layer
+ - perception > decision > action > WORLD EFFECTS → STATE UPDATE
+ - home where energy grows, social level decrease, work where energy decreases, social level grows
+c.) Cognitive layer
+
+You now have a physics engine where objects behave as autonomous agents instead of passive bodies. Each agent continuously observes its local environment using a spatial grid and converts it into a simplified perception. Based on internal energy state, the agent makes decisions like going to a home location, going to a pub, or wandering randomly. These decisions are not external forces but self-generated behavioral instructions that directly influence motion through the existing physics system. Agents also maintain short-term memory that records simple events like nearby encounters, which can later influence behavior. Overall, you now have a hybrid system where physically simulated motion and rule-based decision-making are tightly integrated into a single emergent world.
+
+2. Agent Layer (THIS is your next step)
+ - 
+
+Each circle becomes:
+
+perception
+memory
+state
+decision-making
+communication interface
+
+Example upgrade:
+
+class Agent extends Ball {
+  memory = [];
+  energy = 100;
+  personality = { curiosity: 0.5, aggression: 0.2 };
+
+  perceive(world) {}
+  decide() {}
+  act() {}
+}
+
+👉 This is where “life” begins.
+
+3. Cognitive Layer (LLM later)
+
+This is NOT continuous.
+
+LLM should be:
+
+expensive
+sparse
+event-triggered
+
+Example triggers:
+
+collision
+proximity meeting
+memory threshold reached
+“confusion state”
+
+*************************************
+
+Now, after a really long break, I'll start a new playlist, but unlike the previous ones, this will have an open end, since I'm not sure where exactly I'll be heading with this. I only know the basic idea: I want to create an environment where agents communicate with each other, observe the world and make thier own decisions. Like an artificial life sandbox project.
+A project like this consist of 3 layers. 
+First there is a physics layer, where the physical rules of the environment are defined. I've already built one a few years ago, it's called balls and walls, where balls are moving and colliding with each other and bouncing off the walls. I created an updated version from last time, with spatial grid system for more efficient collision detection, which was crucial for scaleability, a fixed timestep, so the simulation runs with 60 frames per second, regardless of browser, and I also added this feature that if I click on a ball and then somewhere on the canvas, the ball tries to find its way to the target point. It's not perfect yet, as you can see here, but it's a good start.
+The second layer would be the agent layer. This is also not something entirely new, I made a playlist before where these agents, they were not balls but capsules, were capable of learning and adapting, each of them had their own neural network, and they eventually figured out how to navigate through a given track. I'm going to start with a very simple example again and get more complex gradually.
+But before that, the third layer of this project, and this is the one I find the most exciting, is the cognitive layer. This is where the agents start to communicate with each other, share informations with each other and learn from each other. And I will experiment with LLMs, Large Language Models for that, something I wasn't even thinking about 6 years ago when I created my last videos. I will start with a basic example for this layer as well, just casual chitchat, but I think it has big potentials so I'll keep going back to this layer as well.
+
+So the starter idea is this. I have the physics engine, where there are two classes, Balls and Walls. What I need now is not just Balls, Balls is an abstraction. Instead I create an Agent class in a new file, which extends the Ball class, it will have only one extra property for now, the name. And just to make sure they are actually doing something, I keep giving them a random target point somewhere in the canvas, if they reach it, they will get a new one immediately so that they keep moving forever. 
+And I also create one more new file, that's where the environment will be difined, I call it main.js and simply create 3 new agent objects, calling them test A, B, C, that's all. I import these new javascript files in the index.html, and here you go, the three agents are there, chasing their targets. 
+
+And this is what what I thought could be a good starting point for this project, 3 brainless red balls moving randomly. I'm going to add LLM to them in the next episode, and then we'll just see where we go from there.
+
+
+
+
+
