@@ -1,7 +1,6 @@
 class Agent extends Ball {
   constructor(name, x, y, r, m) {
     super(x, y, r, m);
-
     this.name = name;
   }
 
