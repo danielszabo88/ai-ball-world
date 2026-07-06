@@ -4,7 +4,7 @@
 >
 | Episode | Title | Concept |
 |---|---|---|
-| S01E01 | Say Hello | Conversation lifecycle, message system, cooldowns |
+| S01E01 | First Contact | Conversation lifecycle, message system, cooldowns |
 | S01E02 | Social Energy | Internal state, motivation, decision-making |
 | S01E03 | Relationships | Social graph, discovery, relationship values |
 | S01E04 | Memory | Memory objects, recency decay, relationship calculation |
