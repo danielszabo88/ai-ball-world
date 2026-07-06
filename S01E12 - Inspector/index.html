@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Inspector</title>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="top-panel">
+            <div id="playback-controls">
+                <button id="btn-pause">Pause</button>
+                <div id="speed-control">
+                    <input type="range" id="speed-slider" min="0" max="3" step="1" value="2" />
+                    <span id="speed-label">1x</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="main-row">
+            <div id="left-panel">
+                <div id="stats-panel">
+                    <p class="panel-section-title">Averages</p>
+                    <div class="stats-compact">
+                        <div class="stats-compact-row">
+                            <span class="label">hunger / energy / soc.</span>
+                            <span id="stat-needs">
+                                <span class="stat-val" id="stat-hunger">–</span> /
+                                <span class="stat-val" id="stat-energy">–</span> /
+                                <span class="stat-val" id="stat-social">–</span>
+                            </span>
+                        </div>
+                        <div class="stats-compact-row">
+                            <span class="label">stress / satisf. / frustr.</span>
+                            <span id="stat-emotions">
+                                <span class="stat-val" id="stat-stress">–</span> /
+                                <span class="stat-val" id="stat-satisfaction">–</span> /
+                                <span class="stat-val" id="stat-frustration">–</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div id="log-panel">
+                    <p class="panel-section-title">Event Log</p>
+                    <div id="log-entries"></div>
+                </div>
+            </div>
+            <canvas id="canvas" tabindex=0 width="640" height="480"></canvas>
+            <div id="right-panel">
+                <p class="panel-section-title">Inspector</p>
+                <div id="inspector-empty">
+                    <p class="panel-empty">click an agent to inspect</p>
+                </div>
+                <div id="inspector-content" style="display:none;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="ballsnwalls.js"></script>
+    <script src="agent.js"></script>
+    <script src="main.js"></script>
+    <script src="ui.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,286 @@
+/* ---- Reset & body ---- */
+body {
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+  font-family: Arial, sans-serif;
+}
+
+#wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ---- Top panel ---- */
+#top-panel {
+  display: flex;
+  margin: 0 auto;
+  width: 100%;
+  justify-content: center;
+}
+
+#playback-controls {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  gap: 8px;
+  border: 0.5px solid #d0d0d0;
+  border-radius: 8px;
+  padding: 8px 14px;
+}
+
+#speed-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#speed-label {
+  display: inline-block;
+  width: 40px;
+  text-align: left;
+}
+
+/* ---- Three-column row ---- */
+#main-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+/* ---- Canvas ---- */
+#canvas {
+  border: 1px solid black;
+  display: block;
+  background: #fffacc;
+  flex-shrink: 0;
+}
+
+/* ---- Left panel ---- */
+#left-panel {
+  width: 220px;
+  height: 480px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+}
+
+/* ---- Right panel ---- */
+#right-panel {
+  width: 220px;
+  height: 480px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  border: 0.5px solid #d0d0d0;
+  border-radius: 8px;
+}
+
+/* ---- Shared panel text styles ---- */
+.panel-section-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: #555;
+  margin: 0 0 8px;
+}
+
+.panel-empty {
+  font-size: 12px;
+  color: #888;
+}
+
+#stats-panel {
+  border: 0.5px solid #d0d0d0;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.stats-compact {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 11px;
+}
+
+.stats-compact-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.stats-compact-row .label {
+  color: #888;
+}
+
+.stat-val {
+  display: inline-block;
+  width: 16px;
+  text-align: right;
+}
+
+#log-panel {
+  border: 0.5px solid #d0d0d0;
+  border-radius: 8px;
+  padding: 12px;
+  flex: 1; /* fills remaining left-panel height */
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#log-entries {
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: monospace;
+  font-size: 10px;
+  color: #555;
+}
+
+.log-entry {
+  display: flex;
+  gap: 6px;
+}
+
+.log-time {
+  color: #aaa;
+  min-width: 40px;
+  flex-shrink: 0;
+}
+.log-social {
+  color: #555;
+}
+.log-success {
+  color: #1d9e75;
+}
+.log-danger {
+  color: #d85a30;
+}
+
+#right-panel {
+  overflow: hidden; /* already set, just confirming */
+}
+
+#right-panel > .panel-section-title {
+  padding: 12px 12px 0 12px;
+}
+
+#inspector-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+  padding: 0 2px;
+}
+
+/* ---- Inspector sections ---- */
+.inspector-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.inspector-section-title {
+  font-size: 10px;
+  font-weight: 600;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 3px;
+}
+
+.inspector-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+}
+
+.inspector-row .key {
+  color: #888;
+}
+
+.inspector-row .value {
+  color: #222;
+  font-weight: 500;
+  text-align: right;
+}
+
+/* ---- Inline bars ---- */
+.inspector-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+}
+
+.inspector-bar-label {
+  width: 52px;
+  color: #888;
+  flex-shrink: 0;
+}
+
+.inspector-bar-track {
+  flex: 1;
+  height: 6px;
+  background: #e8e8e8;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.inspector-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.1s;
+}
+
+.inspector-bar-fill.good {
+  background: #4caf50;
+}
+.inspector-bar-fill.bad {
+  background: #e57373;
+}
+.inspector-bar-fill.neutral {
+  background: #90caf9;
+}
+
+.inspector-bar-num {
+  width: 24px;
+  text-align: right;
+  color: #444;
+  flex-shrink: 0;
+}
+
+/* ---- Memory entries ---- */
+.memory-entry {
+  font-size: 10px;
+  color: #555;
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.memory-entry .mem-type {
+  color: #888;
+  flex: 1;
+}
+
+.memory-entry .mem-val {
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.memory-entry .mem-val.pos {
+  color: #1d9e75;
+}
+.memory-entry .mem-val.neg {
+  color: #d85a30;
+}
