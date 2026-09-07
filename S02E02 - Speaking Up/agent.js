@@ -435,7 +435,7 @@ class Agent extends Ball {
     if (this.visibleFoods.length > 0) {
       this.lastFoodSeen = {
         pos: { x: this.visibleFoods[0].pos.x, y: this.visibleFoods[0].pos.y },
-        time: Date.now(),
+        time: simClock,
       };
     }
   }
@@ -801,7 +801,7 @@ class Agent extends Ball {
       };
     }
     const sighting = this.lastFoodSeen;
-    const fresh = sighting && Date.now() - sighting.time < 5000;
+    const fresh = sighting && simClock - sighting.time < 5000;
     if (fresh) {
       const x = Math.round(sighting.pos.x);
       const y = Math.round(sighting.pos.y);
