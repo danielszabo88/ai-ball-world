@@ -229,8 +229,7 @@ function startConversation(agent1, agent2) {
 function endConversation(agent1, agent2, reason = "") {
   const now = simClock;
   const conversation = agent1.conversation;
-  const durationSeconds = (now - conversation.startedAt) / 1000;
-  const value = durationSeconds * 0.2
+  const value = conversation.count * 0.2;
   agent1.isConversing = false;
   agent2.isConversing = false;
   agent1.conversation = null;
@@ -250,7 +249,7 @@ function endConversation(agent1, agent2, reason = "") {
   agent1.pickRandomTarget();
   agent2.pickRandomTarget();
   logEvent(
-    `${agent1.name} & ${agent2.name} ended (${durationSeconds.toFixed(1)}s${reason ? " — " + reason : ""})`,
+    `${agent1.name} & ${agent2.name} ended (${conversation.count} turns${reason ? " — " + reason : ""})`,
   );
 }
 
