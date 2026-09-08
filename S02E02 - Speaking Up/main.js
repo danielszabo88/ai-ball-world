@@ -554,6 +554,7 @@ function resetToSetup() {
 }
 
 document.getElementById("btn-start").addEventListener("click", () => {
+  lastTime = performance.now()
   const input = document.getElementById("agent-count");
   let count = parseInt(input.value, 10);
   if (isNaN(count)) count = 12;
