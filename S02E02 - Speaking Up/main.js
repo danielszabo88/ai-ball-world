@@ -34,12 +34,12 @@ class Memory {
     this.type = type;
     this.agentId = agent.id;
     this.value = value;
-    this.createdAt = simClock;
+    this.createdAt = Date.now();
     this.importance = importance;
     this.source = source;
   }
   getWeight() {
-    const age = simClock - this.createdAt;
+    const age = Date.now() - this.createdAt;
     const maxAge = 60000; // 1 minute
     const recency = Math.max(0, 1 - age / maxAge);
     return this.value * this.importance * recency;
@@ -53,11 +53,11 @@ class Message {
     this.type = type;
     this.subject = subject;
     this.text = text;
-    this.createdAt = simClock;
+    this.createdAt = Date.now();
     this.duration = 3000;
   }
   isAlive() {
-    return simClock - this.createdAt < this.duration;
+    return Date.now() - this.createdAt < this.duration;
   }
 }
 
@@ -170,8 +170,6 @@ function findClosest(source, targets) {
   return closest;
 }
 
-const FOOD_SPAWN_INTERVAL = 3000;
-let nextFoodSpawnAt = FOOD_SPAWN_INTERVAL;
 function spawnFood() {
   const foods = getFoods();
   if (foods.length >= 2) {
@@ -183,13 +181,6 @@ function spawnFood() {
   const food = new Food(x, y, nutrition);
 }
 
-function onSimTick() {
-  if (simClock >= nextFoodSpawnAt) {
-    spawnFood();
-    nextFoodSpawnAt = simClock + FOOD_SPAWN_INTERVAL;
-  }
-}
-
 // ====================================================================
 // CONVERSATION LIFECYCLE
 // ====================================================================
@@ -199,7 +190,7 @@ function startConversation(agent1, agent2) {
     count: 1,
     turn: agent1,
     active: true,
-    startedAt: simClock,
+    startedAt: Date.now(),
   };
   for (const [agent, partner] of [
     [agent1, agent2],
@@ -219,15 +210,15 @@ function startConversation(agent1, agent2) {
     agent.vel.set(0, 0);
     agent.addMemory("conversation", partner, 2);
   }
-  agent1.replyTimeout = simClock;
-  sendMessage(agent1, agent2, MESSAGE_TYPES.SMALL_TALK, null, "Hello!");
+  agent1.replyTimeout = Date.now();
+  sendMessage(agent1, agent2, MESSAGE_TYPES.SMALL_TALK, null, MESSAGE_TEXT.GREETING);
   conversation.count++;
   conversation.turn = agent2;
-  agent2.replyTimeout = simClock + CONVERSATION.REPLY_DELAY;
+  agent2.replyTimeout = Date.now() + CONVERSATION.REPLY_DELAY;
   return true;
 }
 function endConversation(agent1, agent2, reason = "") {
-  const now = simClock;
+  const now = Date.now();
   const conversation = agent1.conversation;
   const value = conversation.count * 0.2;
   agent1.isConversing = false;
@@ -554,7 +545,7 @@ function resetToSetup() {
 }
 
 document.getElementById("btn-start").addEventListener("click", () => {
-  lastTime = performance.now()
+  lastTime = performance.now();
   const input = document.getElementById("agent-count");
   let count = parseInt(input.value, 10);
   if (isNaN(count)) count = 12;
@@ -569,3 +560,7 @@ document.getElementById("btn-start").addEventListener("click", () => {
 });
 
 document.getElementById("btn-reset").addEventListener("click", resetToSetup);
+
+setInterval(() => {
+  spawnFood();
+}, 3000);

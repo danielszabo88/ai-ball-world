@@ -20,7 +20,6 @@ physicsWorld.grid = new Array(physicsWorld.gridSize);
 
 let accumulator = 0;
 const fixedDt = 1 / 60;
-let simClock = 0;
 let lastTime = performance.now();
 let LEFT, UP, RIGHT, DOWN;
 let idCounter = 0;
@@ -650,10 +649,6 @@ function mainLoop(time) {
     let steps = 0;
     const MAX_STEPS = 5;
     while (accumulator >= fixedDt && steps < MAX_STEPS) {
-      simClock += fixedDt * 1000;
-      if (window.onSimTick) {
-        window.onSimTick();
-      }
       physicsWorld.balls.forEach((b) => {
         if (typeof b.update === "function") {
           b.update(physicsWorld);

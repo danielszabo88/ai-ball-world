@@ -13,6 +13,15 @@ const GOAL_DESCRIPTIONS = {
   wander: "Just wandering around",
 };
 
+const MESSAGE_TEXT ={
+  GREETING: "Hello!",
+  REJECTION: "NO",
+  HUNGRY: "I'm really hungry",
+  LONELY: "I need some company",
+  SMALL_TALK: "Yo yo small talk",
+  foodSighting: (x, y) => `I saw food at (${x}, ${y})!`,
+}
+
 class Agent extends Ball {
   constructor(name, x, y, r, m) {
     super(x, y, r, m);
@@ -232,7 +241,7 @@ class Agent extends Ball {
         hasFailed: () => {
           return (
             !this.currentAgentTarget ||
-            simClock - this.requestSentAt > CONVERSATION.REQUEST_TIMEOUT
+            Date.now() - this.requestSentAt > CONVERSATION.REQUEST_TIMEOUT
           );
         },
       },
@@ -243,7 +252,7 @@ class Agent extends Ball {
         hasFailed: () => {
           if (this.isConversing) return false;
           if (this.lastRequestOutcome === "rejected") return true;
-          return simClock - this.requestSentAt > CONVERSATION.REQUEST_TIMEOUT;
+          return Date.now() - this.requestSentAt > CONVERSATION.REQUEST_TIMEOUT;
         },
       },
 
@@ -271,7 +280,7 @@ class Agent extends Ball {
           }
 
           if (conv.turn !== this) return;
-          if (simClock < this.replyTimeout) return;
+          if (Date.now() < this.replyTimeout) return;
           const sociability = this.personality.sociability;
           const effectiveMaxSocial = this.socialMax + sociability * 10;
           if (this.social > effectiveMaxSocial) {
@@ -294,7 +303,7 @@ class Agent extends Ball {
           conv.count++;
           conv.turn = this.conversationPartner;
           this.conversationPartner.replyTimeout =
-            simClock + CONVERSATION.REPLY_DELAY;
+            Date.now() + CONVERSATION.REPLY_DELAY;
         },
         isComplete: () => {
           return !this.isConversing;
@@ -364,7 +373,7 @@ class Agent extends Ball {
     return this.getMemoriesOf(agent).some((mem) => mem.type === type);
   }
   getRecentMemories(type, agent, maxAgeMs) {
-    const now = simClock;
+    const now = Date.now();
     return this.getMemoriesOf(agent).filter(
       (mem) => mem.type === type && now - mem.createdAt <= maxAgeMs,
     );
@@ -435,7 +444,7 @@ class Agent extends Ball {
     if (this.visibleFoods.length > 0) {
       this.lastFoodSeen = {
         pos: { x: this.visibleFoods[0].pos.x, y: this.visibleFoods[0].pos.y },
-        time: simClock,
+        time: Date.now(),
       };
     }
   }
@@ -697,7 +706,7 @@ class Agent extends Ball {
     for (const other of this.visibleAgents) {
       if (other === this) continue;
       if (other.isConversing) continue;
-      if (simClock < other.conversationCooldownUntil) continue;
+      if (Date.now() < other.conversationCooldownUntil) continue;
       if (
         this.getRecentMemories(
           "got_rejected",
@@ -732,7 +741,7 @@ class Agent extends Ball {
   requestConversation(target) {
     if (!target) return false;
     this.pendingConversation = target;
-    this.requestSentAt = simClock;
+    this.requestSentAt = Date.now();
     logEvent(`${this.name} → ${target.name} request`);
     return true;
   }
@@ -743,7 +752,7 @@ class Agent extends Ball {
       this.pendingConversation = null;
       return;
     }
-    const elapsed = simClock - this.requestSentAt;
+    const elapsed = Date.now() - this.requestSentAt;
     if (elapsed > CONVERSATION.RESOLUTION_DELAY) {
       if (!this.canInteractWith(other)) {
         this.pendingConversation = null;
@@ -764,7 +773,7 @@ class Agent extends Ball {
       this.lastRequestOutcome = "accepted";
       logEvent(`${other.name} accepted ${this.name}`, "log-success");
     } else {
-      sendMessage(other, this, MESSAGE_TYPES.SMALL_TALK, null, "NO");
+      sendMessage(other, this, MESSAGE_TYPES.SMALL_TALK, null, MESSAGE_TEXT.REJECTION);
       this.addEmotionEvent("frustration", 20);
       this.addMemory("got_rejected", other, -2, 2);
       other.addMemory("rejecting", this, -0.5, 1);
@@ -790,25 +799,25 @@ class Agent extends Ball {
       return {
         type: MESSAGE_TYPES.SHARE_NEED,
         subject: "hunger",
-        text: "I'm really hungry!",
+        text: MESSAGE_TEXT.HUNGRY,
       };
     }
     if (this.social < this.socialMin) {
       return {
         type: MESSAGE_TYPES.SHARE_NEED,
         subject: "social",
-        text: "I need some company!",
+        text: MESSAGE_TEXT.LONELY,
       };
     }
     const sighting = this.lastFoodSeen;
-    const fresh = sighting && simClock - sighting.time < 5000;
+    const fresh = sighting && Date.now() - sighting.time < 5000;
     if (fresh) {
       const x = Math.round(sighting.pos.x);
       const y = Math.round(sighting.pos.y);
       return {
         type: MESSAGE_TYPES.SHARE_LOCATION,
         subject: "food",
-        text: `I saw food at (${x}, ${y})!`,
+        text: MESSAGE_TEXT.foodSighting(x, y),
       };
     }
     if (this.interruptedGoal) {
@@ -821,7 +830,7 @@ class Agent extends Ball {
     return {
       type: MESSAGE_TYPES.SMALL_TALK,
       subject: null,
-      text: "Yo yo small talk",
+      text: MESSAGE_TEXT.SMALL_TALK,
     };
   }
 
@@ -844,7 +853,7 @@ class Agent extends Ball {
   // MAIN UPDATE LOOP
   // ====================================================================
   update() {
-    const now = simClock;
+    const now = Date.now();
     this.updatePerception();
     this.updateTargetStatus();
     this.updateFoodTargetStatus();
