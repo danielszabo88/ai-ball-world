@@ -26,9 +26,9 @@
 
 | Episode | Title | Concept |
 |---|---|---|
-| S02E01 | Scaling Up | 12-agent population scale, fixed home/pub layout, spatial-grid performance |
-| S02E02 | Speaking Up | Structured message types, direct vs. indirect memory, sim-clock fix |
-| S02E03 | Belonging | Computed pub preference, relationship-weighted choice, home vs. pub divergence |
+| S02E01 | Scaling Up | Configurable population (3–12), fixed home/pub layout, spatial-grid performance |
+| S02E02 | Speaking Up | Structured message types, direct vs. indirect memory, pause/speed ownership moved to physics engine |
+| S02E03 | Entering the Pub | Shared Space base class, two-way doorway routing, autonomous goal-scored pub visits |
 
 ## How to Run
 Each episode is a self-contained snapshot in its own folder; open that folder's `index.html` directly in a browser to run that version of the simulation. To see the current state of the project, open the highest-numbered episode folder.
